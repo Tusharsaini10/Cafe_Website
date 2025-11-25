@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Menu</title>
+    <style>
+        /* Import Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Miniver&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+        /* --- Page Styling (Pink Theme) --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Soft Pink Gradient Background */
+            background: linear-gradient(135deg, #fff0f5 0%, #ffd6e0 100%);
+            min-height: 100vh;
+            color: #3b141c;
+            margin: 0;
+            padding-bottom: 130px; /* Space for the bottom bar */
+        }
+
+        h1 {
+            text-align: center;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.95);
+            margin: 0;
+            box-shadow: 0 4px 15px rgba(243, 150, 28, 0.1);
+            font-family: 'Miniver', cursive;
+            font-size: 2.8rem;
+            color: #f3961c;
+            text-shadow: 1px 1px 0px #3b141c;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- Menu Categories --- */
+        .menu-category {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+            color: #3b141c;
+        }
+        
+        .menu-category::after {
+            content: "";
+            flex: 1;
+            height: 4px;
+            background: #f3961c;
+            margin-left: 20px;
+            border-radius: 5px;
+            opacity: 0.6;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 30px;
+        }
+
+        /* --- Food Cards --- */
+        .food-card {
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 15px;
+            /* Pinkish Shadow */
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.15); 
+            border: 2px solid white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .food-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(243, 150, 28, 0.25);
+            border-color: #f3961c;
+        }
+
+        /* --- Image Styling --- */
+        .food-img {
+            width: 100%;
+            height: 160px; /* Fixed height makes grid even */
+            object-fit: cover; /* Crops image perfectly */
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #fff0f5;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            padding: 0 5px;
+        }
+
+        .item-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #3b141c;
+            line-height: 1.3;
+        }
+
+        .item-price {
+            color: #f3961c;
+            font-weight: 700;
+            font-size: 1.1rem;
+            white-space: nowrap;
+        }
+
+        /* --- Checkbox Styling --- */
+        .select-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            background-color: #fffbf2;
+            padding: 10px 12px;
+            border-radius: 12px;
+        }
+
+        input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #f3961c;
+            border-radius: 5px;
+        }
+
+        label {
+            font-size: 0.9rem;
+            color: #666;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* --- Sticky Total Bar --- */
+        .total-bar {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 800px;
+            background-color: #3b141c; /* Dark Coffee */
+            color: white;
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            border-radius: 50px;
+            z-index: 100;
+            border: 2px solid #f3961c;
+        }
+
+        .total-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .total-amount {
+            font-weight: 700;
+            color: #f3961c;
+            font-size: 1.8rem;
+            margin-left: 10px;
+        }
+
+        .place-order-btn , .HomeBtn , .ResetBtn{
+            background-color: #f3961c;
+            color: #3b141c;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .place-order-btn:hover {
+            background-color: #ffffff;
+            color: #f3961c;
+            transform: scale(1.05);
+        }
+        .HomeBtn , .ResetBtn{
+            text-decoration: none;
+            background-color: #3b141c;
+            color: white;
+            border: 1px solid white;
+
+        }
+        .HomeBtn:hover , .ResetBtn:hover{
+            background-color: #f3961c;
+            color:#3b141c;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>✨ Menu & Ordering</h1>
+
+    <form id="menuForm" class="container">
+        
+        <div class="menu-category">🍔 Burgers</div>
+        <div class="menu-grid">
+            <div class="food-card">
+                <img src="https://i.pinimg.com/736x/91/af/93/91af9363bf0dc5a730125e7bbb5d1f69.jpg" class="food-img" alt="Aloo Tikki Burger">
+                <div class="item-header"><span class="item-name">Aloo Tikki</span> <span class="item-price">₹60</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="60" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400" class="food-img" alt="Cheese Burger">
+                <div class="item-header"><span class="item-name">Cheese Burger</span> <span class="item-price">₹120</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="120" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=400" class="food-img" alt="Maharaja">
+                <div class="item-header"><span class="item-name">Maharaja Mac</span> <span class="item-price">₹220</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="220" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://i.pinimg.com/1200x/ae/05/47/ae0547a6b4df2c28084cd0f884053fb5.jpg" class="food-img" alt="Spicy">
+                <div class="item-header"><span class="item-name">Spicy Paneer</span> <span class="item-price">₹180</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="180" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://i.pinimg.com/1200x/f0/83/12/f08312b5b45b888622e24921df51cb4d.jpg" class="food-img" alt="Chicken Burger">
+                <div class="item-header"><span class="item-name">Chicken Burger</span> <span class="item-price">₹150</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="150" onclick="calcTotal()"></div>
+            </div>
+        </div>
+
+        <div class="menu-category">🍕 Pizzas</div>
+        <div class="menu-grid">
+            <div class="food-card">
+                <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400" class="food-img" alt="Pizza">
+                <div class="item-header"><span class="item-name">Margherita</span> <span class="item-price">₹249</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="249" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400" class="food-img" alt="Pepperoni">
+                <div class="item-header"><span class="item-name">Pepperoni</span> <span class="item-price">₹399</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="399" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" class="food-img" alt="BBQ">
+                <div class="item-header"><span class="item-name">BBQ Chicken</span> <span class="item-price">₹449</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="449" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://i.pinimg.com/1200x/c9/2d/06/c92d069f0682a44dbae4b15c4090e14a.jpg" class="food-img" alt="Farmhouse">
+                <div class="item-header"><span class="item-name">Farmhouse</span> <span class="item-price">₹349</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="349" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?w=400" class="food-img" alt="Paneer">
+                <div class="item-header"><span class="item-name">Paneer Special</span> <span class="item-price">₹329</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="329" onclick="calcTotal()"></div>
+            </div>
+        </div>
+
+        <div class="menu-category">🍟 Sides</div>
+        <div class="menu-grid">
+            <div class="food-card">
+                <img src="https://i.pinimg.com/736x/c3/9d/9c/c39d9c6b097c7354a93a722af31a4d86.jpg" class="food-img" alt="Fries">
+                <div class="item-header"><span class="item-name">French Fries</span> <span class="item-price">₹90</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="90" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://i.pinimg.com/1200x/64/1f/e3/641fe39f462c4cc035a3fd9a908ff3f2.jpg" class="food-img" alt="Onion Rings">
+                <div class="item-header"><span class="item-name">Onion Rings</span> <span class="item-price">₹120</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="120" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://i.pinimg.com/1200x/1b/31/db/1b31db5cf560c4dae5ca0e584c9f1fcf.jpg" class="food-img" alt="Nuggets">
+                <div class="item-header"><span class="item-name">Chicken Nuggets</span> <span class="item-price">₹160</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="160" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=400" class="food-img" alt="Salad">
+                <div class="item-header"><span class="item-name">Caesar Salad</span> <span class="item-price">₹200</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="200" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://i.pinimg.com/1200x/5e/cb/c6/5ecbc688ce65b2eb47e5953d8e6ee578.jpg" class="food-img" alt="Garlic Bread">
+                <div class="item-header"><span class="item-name">Garlic Bread</span> <span class="item-price">₹110</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="110" onclick="calcTotal()"></div>
+            </div>
+
+             <div class="food-card">
+                <img src="https://i.pinimg.com/736x/5b/d5/05/5bd505f837ab3aa00ac51eea9ce3c5a4.jpg" class="food-img" alt="Garlic Bread">
+                <div class="item-header"><span class="item-name">Chicken Fry</span> <span class="item-price">₹210</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="210" onclick="calcTotal()"></div>
+            </div>
+        </div>
+
+        <div class="menu-category">🥤 Drinks</div>
+        <div class="menu-grid">
+            <div class="food-card">
+                <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400" class="food-img" alt="Coke">
+                <div class="item-header"><span class="item-name">Coca Cola</span> <span class="item-price">₹60</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="60" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400" class="food-img" alt="Lime">
+                <div class="item-header"><span class="item-name">Fresh Lime</span> <span class="item-price">₹80</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="80" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400" class="food-img" alt="Iced Tea">
+                <div class="item-header"><span class="item-name">Iced Tea</span> <span class="item-price">₹100</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="100" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400" class="food-img" alt="Shake">
+                <div class="item-header"><span class="item-name">Choco Shake</span> <span class="item-price">₹150</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="150" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400" class="food-img" alt="Water">
+                <div class="item-header"><span class="item-name">Mineral Water</span> <span class="item-price">₹30</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="30" onclick="calcTotal()"></div>
+            </div>
+
+            <div class="food-card">
+                <img src="https://i.pinimg.com/736x/83/f9/e6/83f9e6fe03ec87745e9ccd12dbdf3241.jpg" class="food-img" alt="Water">
+                <div class="item-header"><span class="item-name">Mocktails</span> <span class="item-price">₹30</span></div> 
+                <div class="select-row"><label>Add to cart</label><input type="checkbox" value="30" onclick="calcTotal()"></div>
+            </div>
+        </div>
+
+        <div class="menu-category">🍝 Pasta & Noodles</div>
+<div class="menu-grid">
+    <div class="food-card">
+        <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=400" class="food-img" alt="Red Pasta">
+        <div class="item-header"><span class="item-name">Red Sauce Pasta</span> <span class="item-price">₹180</span></div> 
+        <div class="select-row"><label>Add to cart</label><input type="checkbox" value="180" onclick="calcTotal()"></div>
+    </div>
+
+    <div class="food-card">
+        <img src="https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=400" class="food-img" alt="White Pasta">
+        <div class="item-header"><span class="item-name">White Sauce Pasta</span> <span class="item-price">₹200</span></div> 
+        <div class="select-row"><label>Add to cart</label><input type="checkbox" value="200" onclick="calcTotal()"></div>
+    </div>
+
+     <div class="food-card">
+        <img src="https://i.pinimg.com/1200x/81/47/2c/81472ccbf711ebf47bf1b99502a67b18.jpg" class="food-img" alt="White Pasta">
+        <div class="item-header"><span class="item-name">Red Sauce Pasta</span> <span class="item-price">₹200</span></div> 
+        <div class="select-row"><label>Add to cart</label><input type="checkbox" value="200" onclick="calcTotal()"></div>
+    </div>
+
+    <div class="food-card">
+        <img src="https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?w=400" class="food-img" alt="Maggi">
+        <div class="item-header"><span class="item-name">Masala Maggi</span> <span class="item-price">₹50</span></div> 
+        <div class="select-row"><label>Add to cart</label><input type="checkbox" value="50" onclick="calcTotal()"></div>
+    </div>
+
+     <div class="food-card">
+        <img src="https://i.pinimg.com/736x/a2/7e/3a/a27e3afbba46544ff12cf894cf4bd5e0.jpg" class="food-img" alt="Maggi">
+        <div class="item-header"><span class="item-name">Veg Ramen</span> <span class="item-price">₹150</span></div> 
+        <div class="select-row"><label>Add to cart</label><input type="checkbox" value="150" onclick="calcTotal()"></div>
+    </div>
+
+    <div class="food-card">
+        <img src="https://i.pinimg.com/736x/99/4e/08/994e08e8b83cac19310f117a9ab593a3.jpg" class="food-img" alt="Maggi">
+        <div class="item-header"><span class="item-name">Non-Veg Ramen</span> <span class="item-price">₹200</span></div> 
+        <div class="select-row"><label>Add to cart</label><input type="checkbox" value="200" onclick="calcTotal()"></div>
+    </div>
+</div>
+
+        <div class="menu-category">🍰 Desserts</div>
+<div class="menu-grid">
+    <div class="food-card">
+        <img src="https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=400" class="food-img" alt="Choco Lava">
+        <div class="item-header"><span class="item-name">Choco Lava Cake</span> <span class="item-price">₹90</span></div> 
+        <div class="select-row"><label>Add to cart</label><input type="checkbox" value="90" onclick="calcTotal()"></div>
+    </div>
+
+    <div class="food-card">
+        <img src="https://i.pinimg.com/736x/31/57/a7/3157a7660522748ee9f3b90be45e69ba.jpg" class="food-img" alt="Brownie">
+        <div class="item-header"><span class="item-name">Walnut Brownie</span> <span class="item-price">₹110</span></div> 
+        <div class="select-row"><label>Add to cart</label><input type="checkbox" value="110" onclick="calcTotal()"></div>
+    </div>
+
+    <div class="food-card">
+        <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400" class="food-img" alt="Ice Cream">
+        <div class="item-header"><span class="item-name">Vanilla Scoop</span> <span class="item-price">₹50</span></div> 
+        <div class="select-row"><label>Add to cart</label><input type="checkbox" value="50" onclick="calcTotal()"></div>
+    </div>
+
+    <div class="food-card">
+        <img src="https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400" class="food-img" alt="Waffles">
+        <div class="item-header"><span class="item-name">Choco Waffle</span> <span class="item-price">₹140</span></div> 
+        <div class="select-row"><label>Add to cart</label><input type="checkbox" value="140" onclick="calcTotal()"></div>
+    </div>
+
+     <div class="food-card">
+        <img src="https://i.pinimg.com/1200x/65/84/5c/65845c97797d23665b066df4cc533f3b.jpg" class="food-img" alt="Waffles">
+        <div class="item-header"><span class="item-name">Rasgulla</span> <span class="item-price">₹120</span></div> 
+        <div class="select-row"><label>Add to cart</label><input type="checkbox" value="120" onclick="calcTotal()"></div>
+    </div>
+</div>
+
+
+    </form>
+
+    <div class="total-bar">
+        <div class="total-text">Total: <span class="total-amount">₹<span id="totalPrice">0</span></span></div>
+        <button class="place-order-btn" onclick="submitFinalOrder()">Complete Order</button>
+        <a href="index.html" class="HomeBtn">Home</a>
+        <a href="order.html" class="ResetBtn">Reset</a>
+    </div>
+    
+
+    <script>
+        function calcTotal() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            let total = 0;
+            checkboxes.forEach((box) => {
+                if (box.checked) {
+                    total += parseFloat(box.value);
+                }
+            });
+            document.getElementById("totalPrice").innerText = total;
+        }
+
+        function submitFinalOrder() {
+            const checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            
+            if (checkedBoxes.length === 0) {
+                alert("Your cart is empty! Please select some items.");
+                return;
+            }
+
+            let summaryNote = "🧾 ORDER SUMMARY \n\n";
+            let total = 0;
+            let count = 1;
+
+            checkedBoxes.forEach((box) => {
+                const card = box.closest('.food-card');
+                const name = card.querySelector('.item-name').innerText;
+                const price = parseFloat(box.value);
+                
+                summaryNote += `${count}. ${name} - ₹${price}\n`;
+                total += price;
+                count++;
+            });
+
+            summaryNote += "\n--------------------------\n";
+            summaryNote += `💰 TOTAL BILL: ₹${total}`;
+            summaryNote += "\n--------------------------\n";
+            summaryNote += "Thank you for your order!";
+
+            alert(summaryNote);
+        }
+    </script>
+
+</body>
+</html>
